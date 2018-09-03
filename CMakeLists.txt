@@ -166,6 +166,9 @@ if(R_LIB)
 endif()
 
 add_library(objxgboost OBJECT ${SOURCES})
+set_target_properties(objxgboost PROPERTIES CXX_VISIBILITY_PRESET "default")
+set_target_properties(objxgboost PROPERTIES C_VISIBILITY_PRESET "default")
+
 
 
 # building shared library for R package
@@ -256,3 +259,13 @@ endif()
 
 # Group sources
 auto_source_group("${SOURCES}")
+
+#INSTALL
+configure_file(${PROJECT_NAME}-config.cmake.in ${PROJECT_NAME}-config.cmake @ONLY)
+install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}-targets ARCHIVE DESTINATION lib LIBRARY DESTINATION lib RUNTIME DESTINATION bin)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake DESTINATION lib/cmake/${PROJECT_NAME})
+install(EXPORT ${PROJECT_NAME}-targets NAMESPACE :: DESTINATION lib/cmake/${PROJECT_NAME})
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/include DESTINATION .)
+
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/rabit/include DESTINATION .)
+install(TARGETS rabit EXPORT xgboost-targets ARCHIVE DESTINATION lib LIBRARY DESTINATION lib RUNTIME DESTINATION bin)
