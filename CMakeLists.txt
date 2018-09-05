@@ -4,8 +4,8 @@ include(cmake/Utils.cmake)
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
 find_package(OpenMP)
 
-set_default_configuration_release()
-msvc_use_static_runtime()
+#set_default_configuration_release()
+#msvc_use_static_runtime()
 
 # Options
 option(USE_CUDA  "Build with GPU acceleration")
