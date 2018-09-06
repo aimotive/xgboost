@@ -461,6 +461,8 @@ class LearnerImpl : public Learner {
                HostDeviceVector<bst_float>* out_preds, unsigned ntree_limit,
                bool pred_leaf, bool pred_contribs, bool approx_contribs,
                bool pred_interactions) const override {
+    //std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
     if (pred_contribs) {
       gbm_->PredictContribution(data, &out_preds->HostVector(), ntree_limit, approx_contribs);
     } else if (pred_interactions) {
@@ -470,8 +472,11 @@ class LearnerImpl : public Learner {
       gbm_->PredictLeaf(data, &out_preds->HostVector(), ntree_limit);
     } else {
       this->PredictRaw(data, out_preds, ntree_limit);
+
+      //std::cout << "----after PredictRaw = " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - begin).count() <<std::endl;
       if (!output_margin) {
         obj_->PredTransform(out_preds);
+        //std::cout << "----after PredTransform = " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - begin).count() <<std::endl;
       }
     }
   }

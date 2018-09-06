@@ -61,7 +61,7 @@ class CPUPredictor : public Predictor {
       constexpr int kUnroll = 8;
       const auto nsize = static_cast<bst_omp_uint>(batch.Size());
       const bst_omp_uint rest = nsize % kUnroll;
-#pragma omp parallel for schedule(static)
+//#pragma omp parallel for schedule(static) //AImotive FIX
       for (bst_omp_uint i = 0; i < nsize - rest; i += kUnroll) {
         const int tid = omp_get_thread_num();
         RegTree::FVec& feats = thread_temp[tid];
