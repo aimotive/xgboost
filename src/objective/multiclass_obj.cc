@@ -49,10 +49,10 @@ class SoftmaxMultiClassObj : public ObjFunction {
     const auto ndata = static_cast<omp_ulong>(preds_h.size() / nclass);
 
     int label_error = 0;
-    #pragma omp parallel
+    //#pragma omp parallel //AImotive FIX
     {
       std::vector<bst_float> rec(nclass);
-      #pragma omp for schedule(static)
+      //#pragma omp for schedule(static) //AImotive FIX
       for (omp_ulong i = 0; i < ndata; ++i) {
         for (int k = 0; k < nclass; ++k) {
           rec[k] = preds_h[i * nclass + k];

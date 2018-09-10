@@ -239,7 +239,7 @@ class CPUPredictor : public Predictor {
       auto &batch = iter->Value();
       // parallel over local batch
       const auto nsize = static_cast<bst_omp_uint>(batch.Size());
-#pragma omp parallel for schedule(static)
+//#pragma omp parallel for schedule(static) //AImotive FIX
       for (bst_omp_uint i = 0; i < nsize; ++i) {
         const int tid = omp_get_thread_num();
         auto ridx = static_cast<size_t>(batch.base_rowid + i);
@@ -288,7 +288,7 @@ class CPUPredictor : public Predictor {
       auto &batch = iter->Value();
       // parallel over local batch
       const auto nsize = static_cast<bst_omp_uint>(batch.Size());
-#pragma omp parallel for schedule(static)
+//#pragma omp parallel for schedule(static) //AImotive FIX
       for (bst_omp_uint i = 0; i < nsize; ++i) {
         auto row_idx = static_cast<size_t>(batch.base_rowid + i);
         unsigned root_id = info.GetRoot(row_idx);

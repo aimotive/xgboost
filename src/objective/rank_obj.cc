@@ -53,7 +53,7 @@ class LambdaRankObj : public ObjFunction {
         << "group structure not consistent with #rows";
 
     const auto ngroup = static_cast<bst_omp_uint>(gptr.size() - 1);
-    #pragma omp parallel
+    //#pragma omp parallel //AImotive FIX
     {
       // parall construct, declare random number generator here, so that each
       // thread use its own random number generator, seed by thread id and current iteration
@@ -67,7 +67,7 @@ class LambdaRankObj : public ObjFunction {
         sum_weights += info.GetWeight(k);
       }
       bst_float weight_normalization_factor = ngroup/sum_weights;
-      #pragma omp for schedule(static)
+      //#pragma omp for schedule(static) //AImotive FIX
       for (bst_omp_uint k = 0; k < ngroup; ++k) {
         lst.clear(); pairs.clear();
         for (unsigned j = gptr[k]; j < gptr[k+1]; ++j) {
