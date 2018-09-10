@@ -55,7 +55,7 @@ class RegLossObj : public ObjFunction {
     avx::Float8 scale(param_.scale_pos_weight);
 
     const omp_ulong remainder = n % 8;
-#pragma omp parallel for schedule(static)
+//#pragma omp parallel for schedule(static) //AImotive FIX
     for (omp_ulong i = 0; i < n - remainder; i += 8) {
       avx::Float8 y(&info.labels_[i]);
       avx::Float8 p = Loss::PredTransform(avx::Float8(&preds_h[i]));
@@ -82,7 +82,7 @@ class RegLossObj : public ObjFunction {
   void PredTransform(HostDeviceVector<bst_float> *io_preds) override {
     std::vector<bst_float> &preds = io_preds->HostVector();
     const auto ndata = static_cast<bst_omp_uint>(preds.size());
-#pragma omp parallel for schedule(static)
+//#pragma omp parallel for schedule(static) //AImotive FIX
     for (bst_omp_uint j = 0; j < ndata; ++j) {
       preds[j] = Loss::PredTransform(preds[j]);
     }
@@ -153,7 +153,7 @@ class PoissonRegression : public ObjFunction {
     bool label_correct = true;
     // start calculating gradient
     const omp_ulong ndata = static_cast<omp_ulong>(preds_h.size()); // NOLINT(*)
-#pragma omp parallel for schedule(static)
+//#pragma omp parallel for schedule(static) //AImotive FIX
     for (omp_ulong i = 0; i < ndata; ++i) { // NOLINT(*)
       bst_float p = preds_h[i];
       bst_float w = info.GetWeight(i);
@@ -170,7 +170,7 @@ class PoissonRegression : public ObjFunction {
   void PredTransform(HostDeviceVector<bst_float> *io_preds) override {
     std::vector<bst_float> &preds = io_preds->HostVector();
     const long ndata = static_cast<long>(preds.size()); // NOLINT(*)
-#pragma omp parallel for schedule(static)
+//#pragma omp parallel for schedule(static) //AImotive FIX
     for (long j = 0; j < ndata; ++j) {  // NOLINT(*)
       preds[j] = std::exp(preds[j]);
     }
@@ -261,7 +261,7 @@ class CoxRegression : public ObjFunction {
   void PredTransform(HostDeviceVector<bst_float> *io_preds) override {
     std::vector<bst_float> &preds = io_preds->HostVector();
     const long ndata = static_cast<long>(preds.size()); // NOLINT(*)
-    #pragma omp parallel for schedule(static)
+    //#pragma omp parallel for schedule(static) //AImotive FIX
     for (long j = 0; j < ndata; ++j) {  // NOLINT(*)
       preds[j] = std::exp(preds[j]);
     }
@@ -302,7 +302,7 @@ class GammaRegression : public ObjFunction {
     bool label_correct = true;
     // start calculating gradient
     const omp_ulong ndata = static_cast<omp_ulong>(preds_h.size()); // NOLINT(*)
-    #pragma omp parallel for schedule(static)
+    //#pragma omp parallel for schedule(static) //AImotive FIX
     for (omp_ulong i = 0; i < ndata; ++i) { // NOLINT(*)
       bst_float p = preds_h[i];
       bst_float w = info.GetWeight(i);
@@ -318,7 +318,7 @@ class GammaRegression : public ObjFunction {
   void PredTransform(HostDeviceVector<bst_float> *io_preds) override {
     std::vector<bst_float> &preds = io_preds->HostVector();
     const long ndata = static_cast<long>(preds.size()); // NOLINT(*)
-    #pragma omp parallel for schedule(static)
+    //#pragma omp parallel for schedule(static) //AImotive FIX
     for (long j = 0; j < ndata; ++j) {  // NOLINT(*)
       preds[j] = std::exp(preds[j]);
     }
@@ -369,7 +369,7 @@ class TweedieRegression : public ObjFunction {
     bool label_correct = true;
     // start calculating gradient
     const omp_ulong ndata = static_cast<omp_ulong>(preds->Size()); // NOLINT(*)
-    #pragma omp parallel for schedule(static)
+    //#pragma omp parallel for schedule(static) //AImotive FIX
     for (omp_ulong i = 0; i < ndata; ++i) { // NOLINT(*)
       bst_float p = preds_h[i];
       bst_float w = info.GetWeight(i);
@@ -389,7 +389,7 @@ class TweedieRegression : public ObjFunction {
   void PredTransform(HostDeviceVector<bst_float> *io_preds) override {
     std::vector<bst_float> &preds = io_preds->HostVector();
     const long ndata = static_cast<long>(preds.size()); // NOLINT(*)
-#pragma omp parallel for schedule(static)
+//#pragma omp parallel for schedule(static) //AImotive FIX
     for (long j = 0; j < ndata; ++j) {  // NOLINT(*)
       preds[j] = std::exp(preds[j]);
     }
